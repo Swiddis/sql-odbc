@@ -43,7 +43,7 @@ endif()
 if(MSVC)
   add_compile_options(/W4 /WX)
 else()
-  add_compile_options(-Wall -Wextra -pedantic -Werror)
+  add_compile_options(-Wall -Wextra -pedantic -Werror -Wno-strict-prototypes -Wno-deprecated-declarations)
 endif()
 
 if(NOT WIN32)
@@ -119,8 +119,8 @@ elseif(APPLE)
 	add_compile_definitions	(	WITH_IODBC
 								SQLCOLATTRIBUTE_SQLLEN
 							)
-	# iODBC includes
-	include_directories(/usr/local/opt/libiodbc/include)
+	# iODBC includes. Homebrew may install to either directory depending on version.
+	include_directories(/usr/local/opt/libiodbc/include /opt/homebrew/opt/libiodbc/include)
 elseif(UNIX)
 	# Unix specific
 	add_compile_definitions	(	WITH_UNIXODBC
