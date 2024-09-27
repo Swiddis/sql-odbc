@@ -142,33 +142,33 @@
                 <col span="1" style="background-color:#034f84; width: 20%" />
                 <col span="1" style="width: 20%" />
             </colgroup>
-            % for unit_test in data["UT"]:
+            % for unit_test in data.get("UT", []):
             <tr>
-                <td>${unit_test["UnitTest"]}</td>
-                <td>${unit_test["TotalTestCases"]}</td>
-                <td style="background-color:dark${'green' if unit_test['TotalTestCases'] == unit_test['CasePassCount'] else 'red' }">${str(int(unit_test['TotalTestCases']) - int(unit_test['CasePassCount']))}</td>
+                <td>${unit_test.get("UnitTest", 'None')}</td>
+                <td>${unit_test.get("TotalTestCases", 'None')}</td>
+                <td style="background-color:dark${'green' if unit_test.get('TotalTestCases', 'None') == unit_test.get('CasePassCount', 'None') else 'red' }">${str(int(unit_test.get('TotalTestCases', 0)) - int(unit_test.get('CasePassCount', 0)))}</td>
             </tr>
             % endfor
         </table>
     </div>
-    % for unit_test in data["UT"]:
+    % for unit_test in data.get("UT", []):
     <%
-    total_cnt = unit_test["TotalTestCases"]
-    pass_cnt = unit_test['CasePassCount']
+    total_cnt = unit_test.get("TotalTestCases", 'None')
+    pass_cnt = unit_test.get('CasePassCount', 'None')
     status = ("Passed " + pass_cnt) if (total_cnt == pass_cnt) else ("Failed " + str(int(total_cnt) - int(pass_cnt)))
     status = status + "/" + total_cnt
     %>
-    <div id="info-div-case"><h3 id="${'pass-info' if total_cnt == pass_cnt else 'fail-info'}">${unit_test["UnitTest"] + " - " + status} </h3></div>
-    % for test_case in unit_test["TestCases"]:
+    <div id="info-div-case"><h3 id="${'pass-info' if total_cnt == pass_cnt else 'fail-info'}">${unit_test.get("UnitTest", 'None') + " - " + status} </h3></div>
+    % for test_case in unit_test.get("TestCases", []):
     <%
-    total_cnt = test_case["TestCount"]
-    pass_cnt = test_case['PassCount']
+    total_cnt = test_case.get("TestCount", 'None')
+    pass_cnt = test_case.get('PassCount', 'None')
     status = ("Passed " + pass_cnt) if (total_cnt == pass_cnt) else ("Failed " + str(int(total_cnt) - int(pass_cnt)))
     status = status + "/" + total_cnt
     %>
     <div id="info-div-test">
         <button type="button" class="collapsible" style="color:light${'green' if total_cnt == pass_cnt else 'coral'}">
-            ${test_case["TestCase"] + " - " + status + " - " + test_case["TotalTime"]}
+            ${test_case.get("TestCase", 'None') + " - " + status + " - " + test_case.get("TotalTime", 'None')}
         </button>
         <div class="content">
             <div id="info-div-table">
@@ -183,15 +183,15 @@
                         <col span="1" style="background-color:#034f84; width: 20%" />
                         <col span="1" style="width: 20%" />
                     </colgroup>
-                    % for test_result in test_case["TestResults"]:
+                    % for test_result in test_case.get("TestResults", []):
                     % if "Error" in test_result:
-                    <tr title="${test_result['Error']}">
+                    <tr title="${test_result.get('Error', 'None')}">
                         % else:
                     <tr>
                         % endif
-                        <td>${test_result["TestName"]}</td>
-                        <td>${test_result["TestTime"]}</td>
-                        <td style="background-color:dark${'green' if test_result['TestResult']=='OK' else 'red' }">${test_result["TestResult"]}</td>
+                        <td>${test_result.get("TestName", 'None')}</td>
+                        <td>${test_result.get("TestTime", 'None')}</td>
+                        <td style="background-color:dark${'green' if test_result.get('TestResult', 'None')=='OK' else 'red' }">${test_result.get("TestResult", 'None')}</td>
                     </tr>
                     % endfor
                 </table>
@@ -216,33 +216,33 @@
                 <col span="1" style="background-color:#034f84; width: 20%" />
                 <col span="1" style="width: 20%" />
             </colgroup>
-            % for integration_test in data["IT"]:
+            % for integration_test in data.get("IT", []):
             <tr>
-                <td>${integration_test["UnitTest"]}</td>
-                <td>${integration_test["TotalTestCases"]}</td>
-                <td style="background-color:dark${'green' if integration_test['TotalTestCases'] == integration_test['CasePassCount'] else 'red' }">${str(int(integration_test['TotalTestCases']) - int(integration_test['CasePassCount']))}</td>
+                <td>${integration_test.get("UnitTest", 'None')}</td>
+                <td>${integration_test.get("TotalTestCases", 'None')}</td>
+                <td style="background-color:dark${'green' if integration_test.get('TotalTestCases', 'None') == integration_test.get('CasePassCount', 'None') else 'red' }">${str(int(integration_test.get('TotalTestCases', 0)) - int(integration_test.get('CasePassCount', 0)))}</td>
             </tr>
             % endfor
         </table>
     </div>
-    % for integration_test in data["IT"]:
+    % for integration_test in data.get("IT", []):
     <%
-    total_cnt = integration_test["TotalTestCases"]
-    pass_cnt = integration_test['CasePassCount']
+    total_cnt = integration_test.get("TotalTestCases", 'None')
+    pass_cnt = integration_test.get('CasePassCount', 'None')
     status = ("Passed " + pass_cnt) if (total_cnt == pass_cnt) else ("Failed " + str(int(total_cnt) - int(pass_cnt)))
     status = status + "/" + total_cnt
     %>
-    <div id="info-div-case"><h3 id="${'pass-info' if total_cnt == pass_cnt else 'fail-info'}">${integration_test["UnitTest"] + " - " + status} </h3></div>
-    % for test_case in integration_test["TestCases"]:
+    <div id="info-div-case"><h3 id="${'pass-info' if total_cnt == pass_cnt else 'fail-info'}">${integration_test.get("UnitTest", 'None') + " - " + status} </h3></div>
+    % for test_case in integration_test.get("TestCases", []):
     <%
-    total_cnt = test_case["TestCount"]
-    pass_cnt = test_case['PassCount']
+    total_cnt = test_case.get("TestCount", 'None')
+    pass_cnt = test_case.get('PassCount', 'None')
     status = ("Passed " + pass_cnt) if (total_cnt == pass_cnt) else ("Failed " + str(int(total_cnt) - int(pass_cnt)))
     status = status + "/" + total_cnt
     %>
     <div id="info-div-test">
         <button type="button" class="collapsible" style="color:light${'green' if total_cnt == pass_cnt else 'coral'}">
-            ${test_case["TestCase"] + " - " + status + " - " + test_case["TotalTime"]}
+            ${test_case.get("TestCase", 'None') + " - " + status + " - " + test_case.get("TotalTime", 'None')}
         </button>
         <div class="content">
             <div id="info-div-table">
@@ -257,15 +257,15 @@
                         <col span="1" style="background-color:#034f84; width: 20%" />
                         <col span="1" style="width: 20%" />
                     </colgroup>
-                    % for test_result in test_case["TestResults"]:
+                    % for test_result in test_case.get("TestResults", []):
                     % if "Error" in test_result:
-                    <tr title="${test_result['Error']}">
+                    <tr title="${test_result.get('Error', 'None')}">
                         % else:
                     <tr>
                         % endif
-                        <td>${test_result["TestName"]}</td>
-                        <td>${test_result["TestTime"]}</td>
-                        <td style="background-color:dark${'green' if test_result['TestResult']=='OK' else 'red' }">${test_result["TestResult"]}</td>
+                        <td>${test_result.get("TestName", 'None')}</td>
+                        <td>${test_result.get("TestTime", 'None')}</td>
+                        <td style="background-color:dark${'green' if test_result.get('TestResult', 'None')=='OK' else 'red' }">${test_result.get("TestResult", 'None')}</td>
                     </tr>
                     % endfor
                 </table>
@@ -290,17 +290,17 @@
                 <col span="1" style="background-color:#034f84; width: 20%" />
                 <col span="1" style="width: 20%" />
             </colgroup>
-            % for integration_test in data["IT"]:
+            % for integration_test in data.get("IT", []):
             <tr>
-                <td>${integration_test["UnitTest"]}</td>
-                <td>${integration_test["TotalTestCases"]}</td>
-                <td style="background-color:dark${'green' if integration_test['TotalTestCases'] == integration_test['CasePassCount'] else 'red' }">${str(int(integration_test['TotalTestCases']) - int(integration_test['CasePassCount']))}</td>
+                <td>${integration_test.get("UnitTest", 'None')}</td>
+                <td>${integration_test.get("TotalTestCases", 'None')}</td>
+                <td style="background-color:dark${'green' if integration_test.get('TotalTestCases', 'None') == integration_test.get('CasePassCount', 'None') else 'red' }">${str(int(integration_test.get('TotalTestCases', 0)) - int(integration_test.get('CasePassCount', 0)))}</td>
             </tr>
             % endfor
         </table>
     </div>
     % if "performance" in data.keys():
-    % if "Info" in data["performance"].keys():
+    % if "Info" in data.get("performance", 'None').keys():
     <!-- Performance Tests -->
     <header>
         <h2 style="margin-left: 2%">Performance Info</h2>
@@ -315,7 +315,7 @@
                 <col span="1" style="background-color:#034f84; width: 50%" />
                 <col span="1" style="background-color:#034f84; width: 50%" />
             </colgroup>
-            % for k,v in data["performance"]["Info"].items():
+            % for k,v in data.get("performance", 'None')["Info"].items():
             <tr>
                 <td>${k}</td>
                 <td>${v.rstrip()}</td>
@@ -324,7 +324,7 @@
         </table>
     </div>
     % endif
-    % if "Results" in data["performance"].keys():
+    % if "Results" in data.get("performance", 'None').keys():
     <!-- Performance Tests -->
     <header>
         <h2 style="margin-left: 2%">Performance Results</h2>
@@ -347,14 +347,14 @@
                 <col span="1" style="background-color:#034f84; width: 12.5%" />
                 <col span="1" style="background-color:#034f84; width: 12.5%" />
             </colgroup>
-            % for test_vector in data["performance"]["Results"]:
+            % for test_vector in data.get("performance", 'None')["Results"]:
             <tr>
-                <td>${test_vector["Case"]}</td>
-                <td>${test_vector["Query"]}</td>
-                <td>${test_vector["Min"]}</td>
-                <td>${test_vector["Max"]}</td>
-                <td>${test_vector["Mean"]}</td>
-                <td>${test_vector["Median"]}</td>
+                <td>${test_vector.get("Case", 'None')}</td>
+                <td>${test_vector.get("Query", 'None')}</td>
+                <td>${test_vector.get("Min", 'None')}</td>
+                <td>${test_vector.get("Max", 'None')}</td>
+                <td>${test_vector.get("Mean", 'None')}</td>
+                <td>${test_vector.get("Median", 'None')}</td>
             </tr>
             % endfor
         </table>

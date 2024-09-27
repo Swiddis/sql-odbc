@@ -7,6 +7,7 @@ import sys
 import getopt
 import shutil
 from mako.template import Template
+from mako.exceptions import html_error_template
 from string import capwords
 
 UT_TYPE = "UT"
@@ -15,10 +16,11 @@ PERFORMANCE_TYPE = "performance"
 PERFORMANCE_INFO = "performance_info"
 PERFORMANCE_RESULTS = "performance_results"
 EXCLUDE_EXTENSION_LIST = (
-    ".py", ".c", ".cmake", ".log", 
-    ".pdb", ".dll", ".sln", ".vcxproj", ".user",
-    ".tlog", ".lastbuildstate", ".filters", 
-    ".obj", ".exp", ".lib", ".h", ".cpp", ".ilk")
+    ".py", ".c", ".cmake", ".log", ".pdb",
+    ".dll", ".sln", ".vcxproj", ".user", ".tlog",
+    ".lastbuildstate", ".filters", ".obj", ".exp",
+    ".lib", ".h", ".cpp", ".ilk", ".pyc", ".o", ".o.d"
+)
 total_failures = 0
 SYNC_START = "%%__PARSE__SYNC__START__%%"
 SYNC_SEP = "%%__SEP__%%"
@@ -55,13 +57,15 @@ def RunTests(tests, test_type):
     for test in tests:
         print("Running " + test)
         output_path = test.replace(".exe", "") + ".log"
-        total_failures += subprocess.call([test, "-fout", output_path, "--gtest_color=no"])
-        if test_type == UT_TYPE:
-            with open(output_path, "r+") as f:
+        total_failures += int(subprocess.call([test, "-fout", output_path, "--gtest_color=no"]) != 0)
+        if test_type == UT_TYPE and os.path.exists(output_path):
+            with open(output_path, "r") as f:
                 output.append({"UnitTest" : test.split(os.path.sep)[-1].replace(".exe",""), "Log": f.read()})
-        elif test_type == IT_TYPE:
-            with open(output_path, "r+") as f:
+        elif test_type == IT_TYPE and os.path.exists(output_path):
+            with open(output_path, "r") as f:
                 output.append({"IntegrationTest" : test.split(os.path.sep)[-1].replace(".exe",""), "Log": f.read()})
+        elif not os.path.exists(output_path):
+            print("!! Test log is missing:", output_path)
     print("Total Failures :", total_failures)
     return output
 
@@ -187,7 +191,7 @@ def ParseUnitTestLog(unit_test, log):
     log_json = { "UnitTest" : unit_test }
     log_split = log.splitlines()
     if len(log) < 8:
-        return {}
+        return log_json
 
     tmp = ""
     for log in log_split:
@@ -291,9 +295,15 @@ def main():
         with open(os.path.join(os.getcwd(), outfile), 'w+') as results_file:
             data = RunAllTests([UT_TYPE, IT_TYPE, PERFORMANCE_TYPE], suites, exclude_test_list)
             os.chmod(outfile, 0o744)
-            results_file.write(template.render(data = data))
+            try:
+                rendered = template.render(data = data)
+                results_file.write(rendered)
+                print(f"== Finished generating results file {outfile} ==")
+            except:
+                results_file.write(html_error_template().render().decode('unicode_escape'))
+                print(f"== Encountered errors rendering Mako template, see {outfile} ==")
+                os._exit(1)
 
-        print(f"== Finished generating results file {outfile} ==")
         os._exit(total_failures)
 
     except:
