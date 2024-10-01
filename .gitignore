@@ -60,3 +60,9 @@ CTestTestfile.cmake
 /src/PowerBIConnector/obj/
 /src/PowerBIConnector/.vs/
 src/vcpkg_installed/
+
+# Generated autoconf
+generated/
+# Python3 venv (for testing)
+venv/
+test_output.html
