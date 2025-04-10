@@ -14,7 +14,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Derek Ho          | [derek-ho](https://github.com/derek-ho)             | Amazon      |
 | Lior Perry        | [YANG-DB](https://github.com/YANG-DB)               | Amazon      |
 | Peter Fitzgibbons | [pjfitzgibbons](https://github.com/pjfitzgibbons)   | Amazon      |
-| Simeon Widdis     | [swiddis](https://github.com/swiddis)               | Amazon      |
+| Simeon Widdis     | [Swiddis](https://github.com/Swiddis)               | Amazon      |
 | Chen Dai          | [dai-chen](https://github.com/dai-chen)             | Amazon      |
 | Vamsi Manohar     | [vamsi-amazon](https://github.com/vamsi-amazon)     | Amazon      |
 | Peng Huo          | [penghuo](https://github.com/penghuo)               | Amazon      |
